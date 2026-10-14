@@ -12,11 +12,11 @@
   'use strict';
 
   // Application Configuration
-  const STORAGE_KEY = 'connections_app_state_v2';
+  const STORAGE_KEY = 'cannaconnections_app_state_v2';
   const MAX_MISTAKES = 4;
   const CANONICAL_TIMEZONE = 'Europe/London';
   const LEVEL_EMOJIS = { 1: '🟨', 2: '🟩', 3: '🟦', 4: '🟪' };
-  const HOME_PLACEHOLDER_URL = '#home-placeholder';
+  const HOME_PLACEHOLDER_URL = 'https://tileworksgamesstudio.github.io/CannaGames-Home/';
 
   // EXACT REQUIRED CANNABIS LEAF SVG AS SPECIFIED (Section 8: preserved verbatim)
   const EXACT_CANNABIS_LEAF_SVG = `<svg xmlns="http://w3.org" viewBox="0 0 512 546" width="512" height="546">
