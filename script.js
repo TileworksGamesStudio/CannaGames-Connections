@@ -5,6 +5,8 @@
  * - Exact Fixed-Asset Cannabis Leaf Silhouette Vector Floating Layer
  * - Unified Centered Menu Hierarchy: Top Home + Dynamic Title, 4 Main Actions, 3 Centered Utilities
  * - Content-First Right-to-Left Sliding How to Play Panel (Zero Vertical Motion)
+ * - Instant First-Tap Tile Selection & Highlight (No DOM Destruction on Tap)
+ * - Required Manual Selection & Submission of All 4 Groups (No Auto-Complete)
  * - Defensive Local Storage & Single-Tap Zero-Lag Touch Architecture
  */
 
@@ -18,8 +20,8 @@
   const LEVEL_EMOJIS = { 1: '🟨', 2: '🟩', 3: '🟦', 4: '🟪' };
   const HOME_PLACEHOLDER_URL = 'https://tileworksgamesstudio.github.io/CannaGames-Home/';
 
-  // EXACT REQUIRED CANNABIS LEAF SVG AS SPECIFIED (Section 8: preserved verbatim)
-  const EXACT_CANNABIS_LEAF_SVG = `<svg xmlns="http://w3.org" viewBox="0 0 512 546" width="512" height="546">
+  // EXACT REQUIRED CANNABIS LEAF SVG AS SPECIFIED
+  const EXACT_CANNABIS_LEAF_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 546" width="512" height="546">
   <g fill="#2e7d32">
     <!-- Center / Main Leaf Blade -->
     <path d="M256,20 C240,100 245,180 256,260 C267,180 272,100 256,20 Z" />
@@ -226,7 +228,7 @@
   }
 
   // ==========================================================================
-  // 3. AMBIENT BACKGROUND ICON SYSTEM (EXACT CANNABIS LEAF ASSET REUSE)
+  // 3. AMBIENT BACKGROUND ICON SYSTEM
   // ==========================================================================
   const AmbientSystem = {
     layer: null,
@@ -245,10 +247,7 @@
         for (let i = 0; i < cfg.count; i++) {
           const el = document.createElement('span');
           el.className = `ambient-icon ${cfg.depth}`;
-          
-          // Inject verbatim exact SVG markup
           el.innerHTML = EXACT_CANNABIS_LEAF_SVG;
-
           el.style.left = `${Math.floor(Math.random() * 90) + 5}%`;
 
           const dur = (Math.random() * (cfg.maxDur - cfg.minDur) + cfg.minDur).toFixed(1);
@@ -274,7 +273,7 @@
   };
 
   // ==========================================================================
-  // 4. SCREEN NAVIGATION & HOW TO PLAY (RIGHT-TO-LEFT ONLY)
+  // 4. SCREEN NAVIGATION & HOW TO PLAY
   // ==========================================================================
   const screens = {
     menu: document.getElementById('screen-menu'),
@@ -309,13 +308,11 @@
     vaultList: document.getElementById('vault-list'),
     btnToggleAnim: document.getElementById('btn-toggle-animation'),
     liveIndicator: document.getElementById('live-time-indicator'),
-    // How to Play Right-to-Left Overlay
     howToBackdrop: document.getElementById('howtoplay-backdrop'),
     howToWrapper: document.getElementById('howtoplay-wrapper'),
     howToPanel: document.getElementById('panel-howtoplay'),
     btnCloseHowTo: document.getElementById('btn-close-howtoplay'),
     btnCloseHowToIcon: document.getElementById('btn-close-howtoplay-icon'),
-    // Modals
     modalStats: document.getElementById('modal-stats'),
     modalResult: document.getElementById('modal-result'),
     statPlayed: document.getElementById('stat-played'),
@@ -335,7 +332,6 @@
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // Pure horizontal right-to-left entrance. Zero vertical motion.
   let isPanelAnimating = false;
   function openHowToPlay() {
     if (isPanelAnimating) return;
@@ -448,7 +444,7 @@
   }
 
   // ==========================================================================
-  // 6. GAMEPLAY ENGINE (SINGLE TAP, ZERO LAG)
+  // 6. GAMEPLAY ENGINE (SINGLE TAP, ZERO LAG & NO 4TH GROUP AUTO-COMPLETE)
   // ==========================================================================
   function startPuzzle(puzzle, isArchive) {
     if (!puzzle) return;
@@ -461,9 +457,9 @@
     const saved = getSavedGame(puzzle.date);
     if (saved) {
       solvedCategories = (saved.solvedLevels || []).map(l => puzzle.categories.find(c => c.level === l)).filter(Boolean);
-      unsolvedWords = Array.isArray(saved.unsolvedWords) ? saved.unsolvedWords : [];
+      unsolvedWords = Array.isArray(saved.unsolvedWords) ? [...saved.unsolvedWords] : [];
       mistakesRemaining = typeof saved.mistakesRemaining === 'number' ? saved.mistakesRemaining : MAX_MISTAKES;
-      guessHistory = Array.isArray(saved.guessHistory) ? saved.guessHistory : [];
+      guessHistory = Array.isArray(saved.guessHistory) ? [...saved.guessHistory] : [];
       isComplete = Boolean(saved.isComplete);
       isWon = Boolean(saved.isWon);
     } else {
@@ -479,12 +475,14 @@
       unsolvedWords = all;
     }
 
-    renderBoard();
+    renderSolvedStack();
+    renderGridTiles();
+    updateMistakeDots();
     updateControls();
     showScreen('game');
   }
 
-  function renderBoard() {
+  function renderSolvedStack() {
     const renderedLevels = Array.from(dom.solvedStack.children).map(el => parseInt(el.getAttribute('data-level'), 10));
     const targetLevels = solvedCategories.map(c => c.level);
 
@@ -510,24 +508,34 @@
         dom.solvedStack.appendChild(banner);
       }
     });
+  }
 
+  function renderGridTiles() {
     dom.grid.innerHTML = '';
     unsolvedWords.forEach(word => {
       const tile = document.createElement('button');
       tile.type = 'button';
       tile.className = 'tile';
+      tile.setAttribute('data-word', word);
+
       const isSelected = selectedWords.includes(word);
       if (isSelected) tile.classList.add('selected');
       if (isComplete) tile.disabled = true;
+
       tile.textContent = word;
       tile.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
 
-      tile.addEventListener('click', () => {
-        toggleTile(word);
+      // Fast single-tap listener: updates tile element immediately without wiping the DOM
+      tile.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleTile(word, tile);
       });
+
       dom.grid.appendChild(tile);
     });
+  }
 
+  function updateMistakeDots() {
     const dots = dom.mistakeDots.querySelectorAll('.dot');
     dots.forEach((dot, i) => {
       dot.classList.toggle('filled', i < mistakesRemaining);
@@ -535,16 +543,26 @@
     dom.mistakeDots.setAttribute('aria-label', `${mistakesRemaining} attempts left`);
   }
 
-  function toggleTile(word) {
+  // Instant in-place toggle: Highlights immediately on first tap
+  function toggleTile(word, tileElement) {
     if (isComplete) return;
+
     const idx = selectedWords.indexOf(word);
     if (idx > -1) {
       selectedWords.splice(idx, 1);
+      if (tileElement) {
+        tileElement.classList.remove('selected');
+        tileElement.setAttribute('aria-pressed', 'false');
+      }
     } else {
       if (selectedWords.length >= 4) return;
       selectedWords.push(word);
+      if (tileElement) {
+        tileElement.classList.add('selected');
+        tileElement.setAttribute('aria-pressed', 'true');
+      }
     }
-    renderBoard();
+
     updateControls();
   }
 
@@ -557,13 +575,18 @@
 
   function deselectAll() {
     selectedWords = [];
-    renderBoard();
+    const tiles = dom.grid.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+      tile.classList.remove('selected');
+      tile.setAttribute('aria-pressed', 'false');
+    });
     updateControls();
   }
 
   function shuffleTiles() {
+    if (isComplete || unsolvedWords.length <= 1) return;
     shuffleArray(unsolvedWords);
-    renderBoard();
+    renderGridTiles();
   }
 
   function submitGuess() {
@@ -593,17 +616,23 @@
       unsolvedWords = unsolvedWords.filter(w => !matchedCat.items.includes(w));
       selectedWords = [];
 
+      renderSolvedStack();
+
+      // Check if all 4 categories have now been manually submitted and solved
       if (solvedCategories.length === 4) {
         isComplete = true;
         isWon = true;
+        renderGridTiles();
         finishGame();
       } else {
+        // Categories 1, 2, or 3 solved: Keep remaining tiles active for manual selection
         saveActiveGame();
-        renderBoard();
+        renderGridTiles();
         updateControls();
       }
     } else {
       mistakesRemaining--;
+      updateMistakeDots();
 
       const isOneAway = activePuzzle.categories.some(cat => {
         if (solvedCategories.includes(cat)) return false;
@@ -622,11 +651,12 @@
           solvedCategories = [...activePuzzle.categories];
           unsolvedWords = [];
           selectedWords = [];
+          renderSolvedStack();
+          renderGridTiles();
           finishGame();
         }, 400);
       } else {
         saveActiveGame();
-        renderBoard();
         updateControls();
       }
     }
@@ -634,7 +664,7 @@
 
   function finishGame() {
     saveActiveGame();
-    renderBoard();
+    updateMistakeDots();
     updateControls();
     updateMenuStatus();
     setTimeout(showResultModal, 450);
