@@ -1,0 +1,1181 @@
+/* ==========================================================================
+   1. AUTHORITATIVE EIGHT-COLOUR CANNABIS DESIGN SYSTEM
+   ========================================================================== */
+:root {
+  /* Exact Authoritative Eight-Colour Palette */
+  --color-background:   #22251A; /* 1. Deep natural olive foundation */
+  --color-panel:        #2D3121; /* 2. Muted forest olive content surfaces */
+  --color-primary:      #687A3F; /* 3. Strong natural green actions */
+  --color-secondary:    #879652; /* 4. Soft botanical green accents */
+  --color-highlight:    #B3BD85; /* 5. Pale sage green highlights */
+  --color-text:         #E5E5CF; /* 6. Warm pale cream typography */
+  --color-purple-glow:  #A78BC8; /* 7. Soft lavender purple atmospheric backlight */
+  --color-gold-trim:    #D9C8A1; /* 8. Muted premium gold borders and trim */
+
+  /* Derived Tone Harmonisations */
+  --color-panel-elevated: #363B28;
+  --color-text-dim:       #B3BD85;
+  --color-border-subtle:  rgba(217, 200, 161, 0.32);
+  --color-border-gold:    #D9C8A1;
+
+  /* Connections Category Badges */
+  --cat-1: #D9C8A1; /* Level 1 Muted Gold */
+  --cat-2: #879652; /* Level 2 Soft Botanical Green */
+  --cat-3: #587C6E; /* Level 3 Deep Botanical Cypress */
+  --cat-4: #A78BC8; /* Level 4 Soft Lavender Purple */
+
+  /* Distinct Gold Borders & Outlines */
+  --border-gold-thin:   1px solid var(--color-border-gold);
+  --border-gold-bold:   1.5px solid var(--color-gold-trim);
+  --border-subtle:      1px solid var(--color-border-subtle);
+  --radius-xs: 4px;
+  --radius-sm: 7px;
+  --radius-md: 11px;
+  --radius-lg: 15px;
+
+  /* Atmospheric Purple Glow & Tactile Shadows */
+  --shadow-subtle:        1px 1px 0px rgba(16, 18, 12, 0.85);
+  --shadow-card:          2px 2px 0px rgba(16, 18, 12, 0.95);
+  --shadow-active:        0px 0px 0px transparent;
+  --shadow-purple-backlight: 0 0 20px 2px rgba(167, 139, 200, 0.45), 0 0 42px rgba(167, 139, 200, 0.22);
+  --shadow-panel-glow:    -8px 0 32px 2px rgba(167, 139, 200, 0.40), 0 8px 30px rgba(0, 0, 0, 0.55);
+  --shadow-modal-glow:    0 0 38px 4px rgba(167, 139, 200, 0.42), 4px 4px 0px rgba(16, 18, 12, 0.95);
+
+  /* Motion Timing System */
+  --dur-quick: 0.08s;
+  --dur-card:  0.20s;
+  --panel-dur: 0.44s;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Panel Responsive Variables */
+  --panel-max-width: 540px;
+  --panel-max-height: 760px;
+  --panel-entry-gap: 32px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  padding: max(8px, env(safe-area-inset-top))
+           max(12px, env(safe-area-inset-right))
+           max(12px, env(safe-area-inset-bottom))
+           max(12px, env(safe-area-inset-left));
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ==========================================================================
+   2. BOTANICAL WEAVE TEXTURE & FLOATING CANNABIS LEAF SILHOUETTES
+   ========================================================================== */
+.luxury-bg-texture {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Dual-layer organic micro-weave on deep olive foundation */
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(179, 189, 133, 0.05) 0.85px, transparent 0.95px),
+    linear-gradient(to right, rgba(217, 200, 161, 0.025) 1px, transparent 1px);
+  background-size: 14px 14px, 14px 14px;
+  background-position: 0 0, 0 0;
+}
+
+.ambient-icons-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ambient-icon {
+  position: absolute;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+/* Fixed Asset Render: Dimensions and Depth Layers */
+.ambient-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ambient-icon.depth-bg {
+  width: 22px;
+  height: 24px;
+  opacity: 0.14;
+  filter: blur(0.8px);
+}
+
+.ambient-icon.depth-mid {
+  width: 34px;
+  height: 36px;
+  opacity: 0.22;
+  filter: blur(0.3px);
+}
+
+.ambient-icon.depth-fg {
+  width: 48px;
+  height: 52px;
+  opacity: 0.32;
+  filter: blur(0px);
+}
+
+@keyframes floatLeavesUpward {
+  0% {
+    transform: translateY(106vh) rotate(-7deg);
+  }
+  50% {
+    transform: translateY(48vh) rotate(5deg);
+  }
+  100% {
+    transform: translateY(-16vh) rotate(-10deg);
+  }
+}
+
+.ambient-moving {
+  animation-name: floatLeavesUpward;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ==========================================================================
+   3. APP SHELL & MASTER HEADER (GOLD TRIMMED)
+   ========================================================================== */
+.app-shell {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.master-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0 10px 0;
+  border-bottom: var(--border-gold-bold);
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  color: var(--color-gold-trim);
+  box-shadow: var(--shadow-subtle);
+  touch-action: manipulation;
+  text-decoration: none;
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.home-btn:hover {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 12px rgba(167, 139, 200, 0.4);
+}
+
+.home-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+.home-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.app-title {
+  font-size: clamp(21px, 5.4vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--color-text);
+  line-height: 1.1;
+  word-break: break-word;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.sync-badge {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 4px 9px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-xs);
+  color: var(--color-highlight);
+  box-shadow: 0 0 8px rgba(167, 139, 200, 0.25);
+}
+
+/* ==========================================================================
+   4. SCREENS & MAIN MENU (PURPLE BACKLIT CARDS & GOLD BORDERS)
+   ========================================================================== */
+.master-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.screen-menu {
+  justify-content: center;
+  align-items: center;
+  padding: 6px 0 2px 0;
+}
+
+.menu-centered-container {
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 16px;
+}
+
+.primary-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Muted Forest Olive Card with Visible Gold Trim */
+.menu-card-btn {
+  position: relative;
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  touch-action: manipulation;
+  text-align: left;
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.menu-card-btn:hover {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 16px rgba(167, 139, 200, 0.35), var(--shadow-card);
+}
+
+.menu-card-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+/* Featured Action: Prominent Gold Border + Radiant Purple Backlighting Halo */
+.menu-card-btn.primary-action {
+  background-color: var(--color-panel-elevated);
+  border: var(--border-gold-bold);
+  box-shadow: var(--shadow-purple-backlight), var(--shadow-card);
+}
+
+.menu-card-btn.primary-action::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, rgba(167, 139, 200, 0.4), transparent 75%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.btn-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.btn-main-label {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.2px;
+}
+
+.btn-sub-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+}
+
+.btn-arrow {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-gold-trim);
+  line-height: 1;
+}
+
+.btn-status-badge {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 9px;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: 1px solid var(--color-gold-trim);
+  border-radius: var(--radius-xs);
+  box-shadow: 0 0 8px rgba(167, 139, 200, 0.3);
+}
+
+/* Centered Bottom Utility Row: Stats, Share, Plus with Gold Borders */
+.menu-utility-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 0 2px 0;
+  flex-shrink: 0;
+  margin-inline: auto;
+}
+
+.utility-btn {
+  appearance: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  box-shadow: var(--shadow-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  color: var(--color-gold-trim);
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.utility-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.utility-btn:hover {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 14px rgba(167, 139, 200, 0.4);
+}
+
+.utility-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+/* ==========================================================================
+   5. SCREEN SUBBAR (BACK NAVIGATION)
+   ========================================================================== */
+.screen-subbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: var(--border-gold-thin);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.subbar-back-btn {
+  appearance: none;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease;
+}
+
+.subbar-back-btn:hover {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+}
+
+.subbar-back-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+.subbar-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   6. GAMEPLAY SCREEN (BOARD, TILES, GOLD EDGES & PURPLE BACKLIGHTING)
+   ========================================================================== */
+.screen-game {
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.mistakes-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  align-self: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-subtle);
+}
+
+.mistakes-caption {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-dim);
+}
+
+.mistake-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-secondary);
+}
+
+.dot.filled {
+  background-color: var(--color-gold-trim);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 6px rgba(217, 200, 161, 0.7);
+}
+
+.game-board-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+  min-height: 0;
+}
+
+.solved-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.solved-banner {
+  border: var(--border-gold-bold);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 16px -2px rgba(167, 139, 200, 0.35), var(--shadow-card);
+  padding: 9px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--color-text);
+  animation: bannerEnter 0.24s var(--ease-spring);
+}
+
+@keyframes bannerEnter {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.solved-banner.cat-1 { background-color: var(--cat-1); color: #22251A; }
+.solved-banner.cat-2 { background-color: var(--cat-2); color: #E5E5CF; }
+.solved-banner.cat-3 { background-color: var(--cat-3); color: #E5E5CF; }
+.solved-banner.cat-4 { 
+  background-color: var(--cat-4); 
+  color: #22251A; 
+  box-shadow: 0 0 24px 2px rgba(167, 139, 200, 0.5), var(--shadow-card);
+}
+
+.banner-level-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.88;
+}
+
+.banner-name {
+  font-size: clamp(12.5px, 3.2vw, 14px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.banner-items {
+  font-size: clamp(11px, 2.8vw, 12px);
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+/* 4x4 Grid of Tactile Olive Tiles */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(5px, 1.5vw, 7px);
+  width: 100%;
+}
+
+.tile {
+  position: relative;
+  appearance: none;
+  background-color: var(--color-panel);
+  color: var(--color-text);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  font-family: inherit;
+  font-size: clamp(10.5px, 2.7vw, 13px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.2px;
+  aspect-ratio: 1.15;
+  min-height: 46px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  word-break: break-word;
+  hyphens: auto;
+  touch-action: manipulation;
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.tile:hover:not(:disabled) {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 10px rgba(167, 139, 200, 0.3), var(--shadow-card);
+}
+
+.tile:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+/* Selected Tile: Strong Functional Green + Defined Gold Border + Visible Purple Backlighting Halo */
+.tile.selected {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: var(--border-gold-bold);
+  box-shadow: 0 0 20px 2px rgba(167, 139, 200, 0.65), 0 0 35px rgba(167, 139, 200, 0.3), var(--shadow-subtle);
+  z-index: 2;
+}
+
+.tile.shake {
+  animation: tileShake 0.32s ease-in-out;
+}
+
+@keyframes tileShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.board-action-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 4px;
+  flex-shrink: 0;
+}
+
+.game-btn {
+  appearance: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  min-height: 42px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: var(--border-gold-thin);
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.game-btn:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+.game-btn.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: var(--border-gold-bold);
+  box-shadow: 0 0 16px -1px rgba(167, 139, 200, 0.45), var(--shadow-card);
+}
+
+.game-btn.primary:hover:not(:disabled) {
+  background-color: var(--color-secondary);
+  box-shadow: 0 0 22px rgba(167, 139, 200, 0.6), var(--shadow-card);
+}
+
+.game-btn.secondary {
+  background-color: var(--color-panel);
+  color: var(--color-text);
+}
+
+.game-btn.secondary:hover:not(:disabled) {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+}
+
+.game-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  border-color: var(--color-border-subtle);
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* ==========================================================================
+   7. VAULT & SETTINGS (GOLD TRIMS & PURPLE GLOWS)
+   ========================================================================== */
+.vault-instructions {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  margin-bottom: 4px;
+}
+
+.vault-scroll-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.vault-card-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px 14px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  touch-action: manipulation;
+  font-weight: 700;
+  color: var(--color-text);
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease, background-color var(--dur-quick) ease, border-color var(--dur-quick) ease;
+}
+
+.vault-card-item:hover {
+  background-color: var(--color-panel-elevated);
+  border-color: var(--color-gold-trim);
+  box-shadow: 0 0 14px rgba(167, 139, 200, 0.3), var(--shadow-card);
+}
+
+.vault-card-item:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+.badge-tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-gold-trim);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.badge-tag.won { background-color: var(--color-primary); color: var(--color-text); }
+.badge-tag.revealed { background-color: #8C5454; color: var(--color-text); border-color: rgba(217, 200, 161, 0.5); }
+.badge-tag.unplayed { background-color: var(--color-background); color: var(--color-text-dim); border-color: var(--color-border-subtle); }
+
+.settings-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+}
+
+.setting-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.setting-desc {
+  font-size: 11.5px;
+  color: var(--color-text-dim);
+}
+
+.toggle-pill {
+  appearance: none;
+  min-width: 58px;
+  padding: 6px 12px;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: var(--border-gold-bold);
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: var(--shadow-subtle);
+}
+
+.toggle-pill.off {
+  background-color: var(--color-background);
+  color: var(--color-text-dim);
+  border-color: var(--color-border-subtle);
+}
+
+.sync-state-pill {
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 8px;
+  background-color: var(--color-background);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-xs);
+  color: var(--color-highlight);
+}
+
+/* ==========================================================================
+   8. HOW TO PLAY: SOFT PURPLE BACKLIT PANEL + VISIBLE GOLD TRIM
+   ========================================================================== */
+.howtoplay-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(16, 18, 12, 0.70);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--panel-dur) ease;
+}
+
+.howtoplay-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.howtoplay-overlay-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  padding: max(16px, env(safe-area-inset-top))
+           max(16px, env(safe-area-inset-right))
+           max(16px, env(safe-area-inset-bottom))
+           max(16px, env(safe-area-inset-left));
+  overflow: hidden;
+}
+
+.howtoplay-panel {
+  pointer-events: auto;
+  position: relative;
+  width: min(var(--panel-max-width), calc(100vw - 32px));
+  max-height: min(var(--panel-max-height), calc(100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  background-color: var(--color-panel);
+  border: var(--border-gold-bold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel-glow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* Zero vertical drift: pure horizontal sliding entrance */
+  transform: translate3d(calc(100% + var(--panel-entry-gap)), 0, 0);
+  opacity: 0.88;
+  transition: transform var(--panel-dur) var(--panel-ease),
+              opacity var(--panel-dur) ease;
+  will-change: transform, opacity;
+}
+
+.howtoplay-panel.panel-open {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: var(--border-gold-bold);
+  background-color: var(--color-panel-elevated);
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.panel-back-control {
+  appearance: none;
+  background-color: var(--color-panel);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-text);
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--dur-quick) ease, box-shadow var(--dur-quick) ease;
+}
+
+.panel-back-control:active {
+  transform: translate(1px, 1px);
+  box-shadow: var(--shadow-active);
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text);
+  text-align: center;
+  flex: 1;
+}
+
+.panel-icon-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gold-trim);
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  touch-action: manipulation;
+}
+
+.panel-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+
+.how-lead {
+  color: var(--color-highlight);
+  font-weight: 600;
+}
+
+.how-steps {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.how-steps li strong {
+  color: var(--color-gold-trim);
+}
+
+.how-legend-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-top: 4px;
+  color: var(--color-gold-trim);
+}
+
+.how-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.chip-swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-gold-trim);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.chip-swatch.cat-1 { background-color: var(--cat-1); }
+.chip-swatch.cat-2 { background-color: var(--cat-2); }
+.chip-swatch.cat-3 { background-color: var(--cat-3); }
+.chip-swatch.cat-4 { background-color: var(--cat-4); }
+
+/* ==========================================================================
+   9. SHARED MODALS (STATS & RESULTS WITH PURPLE BACKLIGHTING)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(16, 18, 12, 0.75);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  z-index: 120;
+}
+
+.modal-card {
+  background-color: var(--color-panel);
+  border: var(--border-gold-bold);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal-glow);
+  width: 100%;
+  max-width: 400px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-center {
+  text-align: center;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: var(--border-gold-bold);
+  background-color: var(--color-panel-elevated);
+}
+
+.modal-header h2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--color-gold-trim);
+}
+
+.modal-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stats-matrix {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.stat-box {
+  background-color: var(--color-background);
+  border: var(--border-gold-thin);
+  border-radius: var(--radius-xs);
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-gold-trim);
+}
+
+.stat-lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+}
+
+.result-headline {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.result-grid {
+  font-size: 22px;
+  letter-spacing: 3px;
+  line-height: 1.35;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   10. TOAST NOTIFICATIONS & RESPONSIVE COMPACT MEDIA QUERIES
+   ========================================================================== */
+.toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-panel-elevated);
+  color: var(--color-text);
+  border: var(--border-gold-bold);
+  box-shadow: 0 0 20px rgba(167, 139, 200, 0.45), var(--shadow-card);
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 250;
+  pointer-events: none;
+}
+
+@media (max-height: 640px) {
+  body {
+    padding-top: max(4px, env(safe-area-inset-top));
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
+  }
+  .master-header {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+  }
+  .tile {
+    min-height: 40px;
+    aspect-ratio: 1.25;
+  }
+  .game-btn {
+    min-height: 38px;
+    padding: 6px 10px;
+  }
+  .howtoplay-panel {
+    max-height: calc(100dvh - 20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-icon {
+    animation: none !important;
+  }
+  .howtoplay-panel,
+  .howtoplay-backdrop {
+    transition: none !important;
+  }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
